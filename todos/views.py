@@ -57,11 +57,7 @@ class TodoDetailView(LoginRequiredMixin, DetailView):
     template_name = 'todos/todo_detail.html'
 
     def get_object(self, queryset=None):
-        try:
-            obj = Todo.objects.prefetch_related('tags').get(pk=self.kwargs['pk'])
-        except Todo.DoesNotExist:
-            raise Http404
-        # obj = get_object_or_404(Todo, pk=self.kwargs['pk'])
+        obj = get_object_or_404(Todo.objects.prefetch_related('tags'), pk=self.kwargs['pk'])
         if self.request.user != obj.user:
             raise Http404
 
