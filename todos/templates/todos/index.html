@@ -1,0 +1,69 @@
+{% extends 'todos/base.html' %}
+
+{% block title %}
+    <title>Список дел</title>
+{% endblock %}
+
+{% block content %}
+
+    {% if todo_list %}
+        {% if not searchquery %}
+            <div class="form-check form-switch" style="display: inline-block">
+                <input class="form-check-input" type="checkbox" id="switch_completed" name="switch_completed" {{ checked }}>
+                <label class="form-check-label" for="switch_completed">Не отображать выполненные</label>
+            </div>
+        {% endif %}
+    {% endif %}
+
+    <div style="margin: 10px">
+        <form action="" method="GET" class="form-inline">
+{#            <label>#}
+{#                <input type="text" class="form-control" value="{{ searchquery }}" name="search">#}
+{#            </label>#}
+            <div class="form-group mx-sm-3 mb-2 centerform">
+                <input type="text" class="form-control" id="searchbox" value="{{ searchquery }}" name="search">
+                <button type="submit" class="mybutton btn btn-primary" >Искать</button>
+            </div>
+        </form>
+    </div>
+
+    <div style="margin-bottom: 15px; font-size: 24px">
+        <a href="{% url 'todo-create' %}" class="link-info text-decoration-none">Добавить дело</a>
+    </div>
+
+    {% if todo_list %}
+        <div>
+        <ul>
+        {% for todo in todo_list %}
+            <li>
+                {% if todo.time_created == todo.last_modified %}
+                    <a class="text-decoration-none" href="{% url 'todo-detail' todo.id %}">{{ todo.title }} </a> - Создано: {{ todo.time_created|date:"j F Y, H:i" }}
+                {% else %}
+                    <a class="text-decoration-none" href="{% url 'todo-detail' todo.id %}">{{ todo.title }} </a> - Изменено: {{ todo.last_modified|date:"j F Y, H:i" }}
+                {% endif %}
+                {% if todo.tags.all %}
+                    <p style="margin: 0"> Теги:
+                    {% for tag in todo.tags.all %}
+                         {% if not forloop.last %} {{ tag.title }}, {% else %} {{ tag.title }} {% endif %}
+                    {% endfor %}
+                    </p>
+                {% else %}
+                {% endif %}
+                <p>
+                    {% if todo.is_completed %}
+                        <a class="text-decoration-none link-success" href="{% url 'todo-change-state' todo.id %}"> Выполнено </a>
+                    {% else %}
+                        <a class="text-decoration-none link-danger" href="{% url 'todo-change-state' todo.id %}"> Не выполнено </a>
+                    {% endif %}
+                    <a class="text-decoration-none" style="margin-left: 10px" href="{% url 'todo-update' todo.id %}">Изменить</a>
+                    <a class="text-decoration-none" style="margin-left: 10px" href="{% url 'todo-delete' todo.id %}">Удалить</a>
+                </p>
+            </li>
+        {% endfor %}
+        </ul>
+        </div>
+    {% else %}
+        <p>У вас нет запланированных дел.</p>
+    {% endif %}
+
+{% endblock %}

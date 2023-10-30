@@ -1,0 +1,54 @@
+{% extends 'notes/base.html' %}
+
+{% block title %}
+    <title>Список заметок</title>
+{% endblock %}
+
+{% block content %}
+
+{#    <div style="margin: 10px">#}
+{#        <form action="" method="GET" class="form-inline">#}
+{#            <div class="form-group mx-sm-3 mb-2 centerform">#}
+{#                <input type="text" class="form-control" id="searchbox" value="{{ searchquery }}" name="search">#}
+{#                <button type="submit" class="mybutton btn btn-primary" >Искать</button>#}
+{#            </div>#}
+{#        </form>#}
+{#    </div>#}
+
+    <div style="margin-bottom: 15px; font-size: 24px">
+        <a href="{% url 'note-create' %}" class="text-decoration-none">Добавить заметку</a>
+    </div>
+
+    {% for note in page_obj %}
+        <div class="container">
+            {% if note.title %} <a class="text-decoration-none" style="color: dimgrey;" href="{% url 'note-detail' note.slug %}"> <h3> {{ note.title }} </h3> </a> {% endif %}
+            <p> {{ note.main_text|slice:":570" }}...</p>
+            {% if not note.title %} <a class="text-decoration-none" style="color: darkgrey;" href="{% url 'note-detail' note.slug %}"> Подробнее </a> {% endif %}
+        </div>
+        {% if not forloop.last %}
+            <hr style="width: 75%">
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.paginator.num_pages != 1 %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a class="text-decoration-none" style="margin-right: 5px" href="?page=1">&laquo; Первая (1)</a>
+                    <a class="text-decoration-none" href="?page={{ page_obj.previous_page_number }}">Предыдущая</a>
+                {% endif %}
+
+                <span class="current">
+                    стр {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a class="text-decoration-none" href="?page={{ page_obj.next_page_number }}">Следующая</a>
+                    <a class="text-decoration-none" style="margin-left: 5px" href="?page={{ page_obj.paginator.num_pages }}"> Последняя ({{ page_obj.paginator.num_pages }}) &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'reminders/base.html' %}
+
+{% block title %}
+    <title>Список напоминаний</title>
+{% endblock %}
+
+{% block content %}
+
+    <div style="margin-bottom: 15px; font-size: 24px">
+        <a href="{% url 'reminder-create' %}" class="text-decoration-none">Добавить напоминание</a>
+    </div>
+    <div style="margin-bottom: 15px; font-size: 24px">
+        <a href="{% url 'reminder-pending' %}" class="text-decoration-none">Список отложенных напоминаний</a>
+    </div>
+
+    {% if reminders %}
+        <p> Сработавшие напоминания: <a href="{% url 'reminders-clear' %}" class="text-decoration-none">очистить</a></p>
+        <div>
+        <ul>
+        {% for rem in reminders %}
+            <li>
+                <p> {{ rem.title }} </p>
+            </li>
+        {% endfor %}
+        </ul>
+        </div>
+    {% else %}
+        <p>Ни одно напоминание еще не сработало.</p>
+    {% endif %}
+{% endblock %}

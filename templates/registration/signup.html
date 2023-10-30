@@ -1,0 +1,23 @@
+{% extends "registration/base.html" %}
+
+{% block title %}
+    <title>Регистрация</title>
+{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+        <p>Введите пароль посложнее.</p>
+    {% endif %}
+
+    <form method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Зарегистрироваться">
+    </form>
+
+    {% if next %}
+        <p style="margin-top: 10px">У вас уже есть аккаунт? <a href="{% url 'login' %}?next={{ next }}" class="link-primary text-decoration-none">Войти</a></p>
+    {% else %}
+        <p style="margin-top: 10px">У вас уже есть аккаунт? <a href="{% url 'login' %}" class="link-primary text-decoration-none">Войти</a></p>
+    {% endif %}
+
+{% endblock %}

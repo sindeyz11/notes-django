@@ -1,0 +1,36 @@
+{% extends 'todos/base.html' %}
+
+{% block title %}
+    <title> {{ todo.title }}</title>
+{% endblock %}
+
+{% block content %}
+    <div class="content" style="text-align: center">
+        Название: <a class="text-decoration-none" href="{% url 'todo-update' todo.id %}">{{ todo.title }} </a>
+        <br>
+        <small class="form-text text-muted" style="font-size: 12px">Для редактирования нажмите на название</small>
+        <hr style="">
+        {% if todo.is_completed %}
+            <p class="text-success">Выполнено</p>
+            <p class="form-text text-muted" style="font-size: 12px">Дата выполнения: {{ todo.time_completed }}</p>
+        {% else %}
+            <p class="text-secondary">Не выполнено</p>
+        {% endif %}
+        <p> {{ todo.description }}</p>
+        {% if todo.tags.all %}
+            <p> Теги:
+            {% for tag in todo.tags.all %}
+                 {% if not forloop.last %} {{ tag.title }}, {% else %} {{ tag.title }} {% endif %}
+            {% endfor %}
+            </p>
+        {% else %}
+        <p> Категории не определены.</p>
+        {% endif %}
+        <div style="font-size: 16px">
+            <p> Последнее изменение: {{ todo.last_modified }}</p>
+            <p> Создано: {{ todo.time_created }}</p>
+        </div>
+
+    </div>
+
+{% endblock %}

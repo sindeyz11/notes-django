@@ -1,0 +1,19 @@
+.box {
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.centerform {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mybutton {
+    margin-left: 10px;
+    background-color: grey;
+    border-color: grey;
+}

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load static %}
+        <script src="{% static "js/script.js" %}"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        {% block title %} <title> BASE </title> {% endblock %}
+    </head>
+    <body>
+        <header style="margin: 0 30px 0 30px; font-size: 20px" class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+              <p class="d-flex col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+                  <img style="width: 10%; margin-left: 10px" src="{% static "imgs/Microsoft_To-Do_icon.png" %}" alt="sitelogo" />
+              </p>
+
+              <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+                  <li><a href="{% url 'note-list' %}" class="nav-link px-2 link-primary">Заметки</a></li>
+                  <li><a href="{% url 'todo-list' %}" class="nav-link px-2 link-secondary">Список дел</a></li>
+                  <li><a href="{% url 'reminders-index' %}" class="nav-link px-2 link-primary">Напоминания</a></li>
+              </ul>
+
+              <div class="col-md-3 text-end">
+                  {% if user.is_authenticated %}
+                      <span class="text-secondary">Пользователь: {{ user }}</span>
+                      <button type="button" style="font-size: 18px" onclick="window.location.href='{% url 'logout' %}'" class="btn btn-outline-primary me-2">Выйти</button>
+                  {% else %}
+                      <button type="button" style="font-size: 18px" onclick="window.location.href='{% url 'login' %}'" class="btn btn-outline-primary me-2">Войти</button>
+                  {% endif %}
+              </div>
+        </header>
+
+        <div class="box">
+            {% block content %} {% endblock %}
+        </div>
+
+    </body>
+</html>
